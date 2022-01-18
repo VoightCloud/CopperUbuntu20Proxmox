@@ -1,18 +1,19 @@
 #!/bin/bash
 
-set -e -x
+#set -e -x
+set -e
 # Enable DNS -- AWS, ADEX, NOC
 # sudo nmcli con mod enp0s3 ipv4.dns "10.168.88.2 10.168.62.24 10.48.69.84"
 # Add sudoers file and cloud.cfg
-echo "$DNA" >> /home/centos/dna.txt
-sudo cp /home/centos/dna.txt /etc/dna.txt
-sudo cp /home/centos/sudoers /etc/
-sudo cp /home/centos/cloud.cfg /etc/cloud
+echo "$DNA" >> /home/ubuntu/dna.txt
+sudo cp /home/ubuntu/dna.txt /etc/dna.txt
+sudo cp /home/ubuntu/sudoers /etc/
+sudo cp /home/ubuntu/cloud.cfg /etc/cloud
 # Restart Network Manager
 sudo systemctl restart NetworkManager.service
 
 # Install required certificates
-sudo cp /home/centos/voight-ca.pem /etc/pki/ca-trust/source/anchors/voight-ca.pem
+sudo cp /home/ubuntu/voight-ca.pem /etc/pki/ca-trust/source/anchors/voight-ca.pem
 sudo update-ca-trust extract
 
 ## * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
