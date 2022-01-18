@@ -14,12 +14,12 @@ variable "proxmox_url" {
 
 variable "token" {
   type    = string
-  default = env("packertoken")
+  default = env("packer_token")
 }
 
 variable "username" {
   type    = string
-  default = env("packeruser")
+  default = env("packer_username")
 }
 
 variable "node" {
