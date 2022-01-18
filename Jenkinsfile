@@ -30,13 +30,13 @@ podTemplate(label: "build",
                         try {
                             dir('packer') {
                                 epoch = sh(returnStdout: true, script: "date +%s").trim()
-                                ksisoname = "ks-proxmox-${epoch}.iso"
+                                ksisoname = "preseed-${epoch}.iso"
                                 templateName = "copper-ubuntu20-${epoch}"
                                 password = sh(returnStdout: true, script: "openssl rand -base64 9").trim()
                                 hash = sh(returnStdout: true, script: "openssl passwd -6 ${password}").trim()
 
                                 // Get the encrypted password inserted
-                                sh "sed -i -E 's| password (.*)| password ${hash}|g' http/ks-proxmox.cfg"
+                                sh "sed -i -E 's| password (.*)| password ${hash}|g' http/preseed.cfg"
 
                                 // Create a CDROM ISO for the kickstart
                                 sh "mkisofs -o ${ksisoname} http"
@@ -46,7 +46,7 @@ podTemplate(label: "build",
                                 sh "curl -k -s -X POST https://192.168.137.7:8006/api2/json/nodes/ugli/storage/local/upload -H 'Authorization: PVEAPIToken=$packer_username=$packer_token'  -F 'content=iso' -F 'filename=@${ksisoname}'"
 
                                 // Clean up our encrypted password
-                                sh "sed -i -E 's| password (.*)| password ThePassword|g' http/ks-proxmox.cfg"
+                                sh "sed -i -E 's| password (.*)| password ThePassword|g' http/preseed.cfg"
 
                                 // Build the new image
                                 withEnv(["KSISONAME=${ksisoname}", "KSISOCHECKSUM=${ksisochecksum}", "TEMPLATENAME=${templateName}", "PASSWORD=${password}"]) {
