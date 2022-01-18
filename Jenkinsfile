@@ -46,7 +46,7 @@ podTemplate(label: "build",
                                 sh "curl -k -s -X POST https://192.168.137.7:8006/api2/json/nodes/ugli/storage/local/upload -H 'Authorization: PVEAPIToken=$packer_username=$packer_token'  -F 'content=iso' -F 'filename=@${ksisoname}'"
 
                                 // Clean up our encrypted password
-                                sh "sed -i -E 's| password (.*)| password ThePassword|g' http/ks.cfg"
+                                sh "sed -i -E 's| password (.*)| password ThePassword|g' http/ks-proxmox.cfg"
 
                                 // Build the new image
                                 withEnv(["KSISONAME=${ksisoname}", "KSISOCHECKSUM=${ksisochecksum}", "TEMPLATENAME=${templateName}", "PASSWORD=${password}"]) {
