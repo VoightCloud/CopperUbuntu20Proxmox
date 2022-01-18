@@ -8,7 +8,7 @@ export ksisoname="preseed-${epoch}.iso"
 export templateName="copper-ubu20-${epoch}"
 hash=`openssl passwd -6 $password`
 
-sed -i -E "s|password ThePassword|password $hash|g" http/preseed.cfg
+sed -i -E "s| password ThePassword| password $password|g" http/preseed.cfg
 mkisofs -o "${ksisoname}" http
 export ksisochecksum=`sha256sum ${ksisoname}|awk '{print $1}'`
 packer init proxmox.pkr.hcl
